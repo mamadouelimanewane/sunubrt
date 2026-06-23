@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Stop } from '@/types';
-import { getNextDepartures, OPERATORS } from '@/data/transportData';
+import { getNextDepartures, OPERATORS, getYangoZone, openYango } from '@/data/transportData';
 import { useAppDispatch } from '@/store/hooks';
 import { setRouteOrigin, setRouteDestination, setActiveTab } from '@/store/store';
 
@@ -27,9 +27,18 @@ function LiveCountdown({ waitMin }: { waitMin: number }) {
 export default function StopPopup({ stop }: { stop: Stop }) {
   const dispatch = useAppDispatch();
   const [pressed, setPressed] = useState<'origin' | 'dest' | null>(null);
+  const [yangoTapped, setYangoTapped] = useState(false);
   const deps = getNextDepartures(stop.id).slice(0, 3);
   const mainOp = stop.operators[0];
   const accent = OPERATORS[mainOp]?.color || '#2563eb';
+  const yangoZone = getYangoZone(stop.id);
+
+  function handleYango() {
+    if (!yangoZone) return;
+    setYangoTapped(true);
+    openYango(yangoZone);
+    setTimeout(() => setYangoTapped(false), 3000);
+  }
 
   const handleOrigin = () => {
     setPressed('origin');
@@ -69,11 +78,7 @@ export default function StopPopup({ stop }: { stop: Stop }) {
               fontSize: 9, fontWeight: 800, padding: '2px 7px', borderRadius: 99,
             }}>{op}</span>
           ))}
-          {stop.terConnection && (
-            <span style={{ background: 'rgba(5,150,105,.25)', color: '#34d399', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 99, border: '1px solid rgba(5,150,105,.35)' }}>
-              🚆 TER
-            </span>
-          )}
+{/* TER connection removed — BRT only */}
         </div>
       </div>
 
@@ -100,6 +105,26 @@ export default function StopPopup({ stop }: { stop: Stop }) {
           <span style={{ fontSize: 14 }}>🔴</span> Arrivée
         </button>
       </div>
+
+      {/* ── Yango last mile (pôles uniquement) ─────────────── */}
+      {yangoZone && (
+        <div style={{ padding: '10px 14px 0', borderBottom: `1px solid ${BORDER}` }}>
+          <button
+            onClick={handleYango}
+            style={{
+              width: '100%', padding: '9px 10px', borderRadius: 10,
+              background: yangoTapped ? '#cc2e00' : 'rgba(255,61,0,.18)',
+              border: '1px solid rgba(255,61,0,.35)',
+              color: yangoTapped ? '#fff' : '#ff3d00',
+              fontSize: 12, fontWeight: 700, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              transition: 'all .2s', marginBottom: 10,
+            }}
+          >
+            🚖 {yangoTapped ? 'Ouverture Yango…' : `Yango depuis ici — ~${yangoZone.estimatedWaitMin} min`}
+          </button>
+        </div>
+      )}
 
       {/* ── Prochains passages ──────────────────────────────── */}
       <div style={{ padding: '10px 14px' }}>

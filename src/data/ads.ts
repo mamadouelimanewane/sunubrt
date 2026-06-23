@@ -13,7 +13,7 @@ export interface AdTargeting {
   days?:      number[];           // 0=dim … 6=sam
   zones?:     string[];           // ids de zones ex: ['Plateau','Pikine']
   lines?:     string[];           // lignes ciblées ex: ['L8','A3']
-  operators?: ('DDD'|'AFTU'|'BRT'|'TER'|'all')[];
+  operators?: ('DDD'|'BRT'|'all')[];
 }
 
 export interface AdCampaign {
@@ -86,7 +86,7 @@ export const AD_CAMPAIGNS: AdCampaign[] = [
     accentColor:  '#f97316',
     bgColor:      'rgba(249,115,22,.1)',
     format:       'banner',
-    targeting:    { operators: ['DDD', 'AFTU'], hours: [7, 21] },
+    targeting:    { operators: ['DDD', 'BRT'], hours: [7, 21] },
     startDate:    NOW - 2 * DAY,
     endDate:      NOW + 28 * DAY,
     budgetFcfa:   1_800_000,
@@ -270,7 +270,7 @@ export const AD_CAMPAIGNS: AdCampaign[] = [
     priority:     2,
     freqCap:      2,
   },
-  // ── Campagnes DÉMO — DDD & AFTU ──────────────────────────────
+  // ── Campagnes DÉMO — DDD & BRT ───────────────────────────────
   {
     id:           'ddd_promo_001',
     advertiser:   'Dakar Dem Dikk',
@@ -296,19 +296,19 @@ export const AD_CAMPAIGNS: AdCampaign[] = [
     freqCap:      3,
   },
   {
-    id:           'aftu_promo_001',
-    advertiser:   'AFTU',
-    logo:         '🚐',
-    tagline:      'Association de Financement des Transports Urbains',
+    id:           'brt_promo_001',
+    advertiser:   'Dakar BRT',
+    logo:         '🚍',
+    tagline:      'Bus Rapid Transit — Dakar',
     category:     'transport',
-    title:        '✨ Car Rapide AFTU — Nouveau service express',
-    body:         'Pikine ↔ Plateau en 35 min. Climatisé, Wi-Fi, paiement mobile. Lancé sur 12 nouvelles lignes ce mois.',
-    ctaLabel:     'Voir les nouvelles lignes',
-    ctaUrl:       'https://aftu.sn',
-    accentColor:  '#e11d48',
-    bgColor:      'rgba(225,29,72,.12)',
+    title:        '✨ BRT Dakar — Service express climatisé',
+    body:         'Pikine ↔ Plateau en 35 min. Climatisé, Wi-Fi, paiement mobile. Nouveau réseau en service.',
+    ctaLabel:     'Voir les lignes BRT',
+    ctaUrl:       'https://brt.sn',
+    accentColor:  '#00b450',
+    bgColor:      'rgba(0,180,80,.12)',
     format:       'card',
-    targeting:    { operators: ['AFTU'], hours: [5, 23] },
+    targeting:    { operators: ['BRT'], hours: [5, 23] },
     startDate:    NOW,
     endDate:      NOW + 60 * DAY,
     budgetFcfa:   0,

@@ -11,13 +11,13 @@ const ADMIN_PINS: Record<string, { name: string }> = {
   'admin': { name: 'Super Admin' },
   '9999':  { name: 'Administrateur' },
 };
-const FLEET_DDD_PINS:  Record<string, { name: string; operator: 'DDD' | 'AFTU' }> = {
+const FLEET_DDD_PINS:  Record<string, { name: string; operator: 'DDD' | 'BRT' }> = {
   'ddd1': { name: 'Directeur Exploitation DDD', operator: 'DDD' },
   'ddd2': { name: 'Régulateur DDD',             operator: 'DDD' },
 };
-const FLEET_AFTU_PINS: Record<string, { name: string; operator: 'DDD' | 'AFTU' }> = {
-  'aftu1': { name: 'Coordinateur AFTU',    operator: 'AFTU' },
-  'aftu2': { name: 'Superviseur AFTU',     operator: 'AFTU' },
+const FLEET_BRT_PINS: Record<string, { name: string; operator: 'DDD' | 'BRT' }> = {
+  'brt1': { name: 'Coordinateur BRT',    operator: 'BRT' },
+  'brt2': { name: 'Superviseur BRT',     operator: 'BRT' },
 };
 
 /* ── PIN Modal avec Glassmorphism ─────────────────────────────────────────────── */
@@ -148,19 +148,19 @@ function RoleCard({ icon, title, subtitle, onClick, accent, locked = false }: {
 }
 
 /* ── Fleet Pin Modal ─────────────────────────────────────────── */
-type ModalRole = 'driver' | 'admin' | 'fleet_ddd' | 'fleet_aftu';
+type ModalRole = 'driver' | 'admin' | 'fleet_ddd' | 'fleet_brt';
 
 function FleetPinModal({ operator, onClose, onSuccess }: {
-  operator: 'DDD' | 'AFTU';
+  operator: 'DDD' | 'BRT';
   onClose: () => void;
   onSuccess: (pin: string) => void;
 }) {
   const [pin, setPin] = useState('');
   const [shake, setShake] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const accent = operator === 'DDD' ? '#2563eb' : '#f59e0b';
-  const hint   = operator === 'DDD' ? 'ddd1 · ddd2' : 'aftu1 · aftu2';
-  const PINS   = operator === 'DDD' ? FLEET_DDD_PINS : FLEET_AFTU_PINS;
+  const accent = operator === 'DDD' ? '#2563eb' : '#00b450';
+  const hint   = operator === 'DDD' ? 'ddd1 · ddd2' : 'brt1 · brt2';
+  const PINS   = operator === 'DDD' ? FLEET_DDD_PINS : FLEET_BRT_PINS;
 
   const trySubmit = (p: string) => {
     if (PINS[p]) { onSuccess(p); return; }
@@ -183,7 +183,7 @@ function FleetPinModal({ operator, onClose, onSuccess }: {
         style={{ background: 'rgba(30, 41, 59, 0.7)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(24px)' }}>
         <div className="px-6 py-6 text-center"
           style={{ background: `linear-gradient(160deg, ${accent}40 0%, ${accent}18 100%)`, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
-          <div className="text-5xl mb-3 drop-shadow-lg">{operator === 'DDD' ? '🚌' : '🚐'}</div>
+          <div className="text-5xl mb-3 drop-shadow-lg">{operator === 'DDD' ? '🚌' : '🚍'}</div>
           <h2 className="text-lg font-black text-white">Gestionnaire {operator}</h2>
           <p className="text-sm mt-1 font-medium" style={{ color: accent + 'cc' }}>Code : {hint}</p>
         </div>
@@ -254,9 +254,9 @@ export default function RoleSelection() {
     } else if (role === 'fleet_ddd') {
       const f = FLEET_DDD_PINS[pin];
       dispatch(loginFleetManager({ operator: 'DDD', name: f.name }));
-    } else if (role === 'fleet_aftu') {
-      const f = FLEET_AFTU_PINS[pin];
-      dispatch(loginFleetManager({ operator: 'AFTU', name: f.name }));
+    } else if (role === 'fleet_brt') {
+      const f = FLEET_BRT_PINS[pin];
+      dispatch(loginFleetManager({ operator: 'BRT', name: f.name }));
     }
     setModal(null);
   };
@@ -323,11 +323,11 @@ export default function RoleSelection() {
             <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">🚌</span>
             <span className="font-bold text-sm text-white">DDD</span>
           </button>
-          <button onClick={() => setModal('fleet_aftu')}
+          <button onClick={() => setModal('fleet_brt')}
             className="flex flex-col items-center p-4 rounded-[20px] transition-all duration-300 group active:scale-[.95] touch-manipulation min-h-[100px]"
-            style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.2) 0%, rgba(245,158,11,0.05) 100%)', border: '1px solid rgba(245,158,11,0.3)', backdropFilter: 'blur(12px)' }}>
-            <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">🚐</span>
-            <span className="font-bold text-sm text-white">AFTU</span>
+            style={{ background: 'linear-gradient(135deg, rgba(0,180,80,0.2) 0%, rgba(0,180,80,0.05) 100%)', border: '1px solid rgba(0,180,80,0.3)', backdropFilter: 'blur(12px)' }}>
+            <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">🚍</span>
+            <span className="font-bold text-sm text-white">BRT</span>
           </button>
         </div>
       </div>
@@ -346,8 +346,8 @@ export default function RoleSelection() {
       {modal === 'fleet_ddd' && (
         <FleetPinModal operator="DDD" onClose={() => setModal(null)} onSuccess={p => handlePin('fleet_ddd', p)} />
       )}
-      {modal === 'fleet_aftu' && (
-        <FleetPinModal operator="AFTU" onClose={() => setModal(null)} onSuccess={p => handlePin('fleet_aftu', p)} />
+      {modal === 'fleet_brt' && (
+        <FleetPinModal operator="BRT" onClose={() => setModal(null)} onSuccess={p => handlePin('fleet_brt', p)} />
       )}
     </div>
   );

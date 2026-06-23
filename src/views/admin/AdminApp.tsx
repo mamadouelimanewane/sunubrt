@@ -183,7 +183,7 @@ export default function AdminApp() {
     { id: 'a1', time: Date.now() - 3600000, action: 'Connexion administrateur' },
   ]);
 
-  const totalRevenue = (['DDD','AFTU','BRT','TER'] as OperatorId[]).reduce((s,op)=>s+adminRevenue[op],0);
+  const totalRevenue = (['BRT','DDD'] as OperatorId[]).reduce((s,op)=>s+adminRevenue[op],0);
   const pendingAlerts = reports.filter(r=>Date.now()-r.timestamp<1000*60*60).length;
 
   // Fleet stats
@@ -222,7 +222,7 @@ export default function AdminApp() {
 
   const exportCSV = () => {
     const rows=[['Operateur','Revenus (FCFA)','Part (%)'],
-      ...(['DDD','AFTU','BRT','TER'] as OperatorId[]).map(op=>[op,adminRevenue[op].toString(),
+      ...(['BRT','DDD'] as OperatorId[]).map(op=>[op,adminRevenue[op].toString(),
         totalRevenue>0?((adminRevenue[op]/totalRevenue)*100).toFixed(1)+'%':'0%']),
       ['TOTAL',totalRevenue.toString(),'100%']];
     const blob=new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv;charset=utf-8;'});
@@ -423,7 +423,7 @@ export default function AdminApp() {
                     </div>
                   ))}
                   <select value={newBus.operator} onChange={e=>setNewBus(p=>({...p,operator:e.target.value}))} className="input">
-                    {['DDD','AFTU','BRT','TER'].map(op=><option key={op}>{op}</option>)}
+                    {['BRT','DDD'].map(op=><option key={op}>{op}</option>)}
                   </select>
                   <select value={newBus.lineId} onChange={e=>setNewBus(p=>({...p,lineId:e.target.value}))} className="input">
                     {LINES.filter(l=>l.operator===newBus.operator).map(l=><option key={l.id} value={l.id}>{l.name}</option>)}
@@ -452,9 +452,7 @@ export default function AdminApp() {
                   <div key={bus.id}
                     className={`card rounded-2xl p-4 cursor-pointer hover-scale transition-all ${
                       bus.operator === 'DDD' ? 'glow-card-ddd' :
-                      bus.operator === 'AFTU' ? 'glow-card-aftu' :
-                      bus.operator === 'BRT' ? 'glow-card-brt' :
-                      bus.operator === 'TER' ? 'glow-card-ter' : ''
+                      bus.operator === 'BRT' ? 'glow-card-brt' : ''
                     }`}
                     onClick={()=>setSelectedBusModal(bus)}>
                     <div className="flex items-center gap-3">
@@ -496,7 +494,7 @@ export default function AdminApp() {
                 </span>
               </div>
             </div>
-            {(['DDD','AFTU','BRT','TER'] as const).map(op=>{
+            {(['BRT','DDD'] as const).map(op=>{
               const opLines=LINES.filter(l=>l.operator===op);
               if(!opLines.length)return null;
               return(
@@ -510,9 +508,7 @@ export default function AdminApp() {
                     return(
                       <div key={line.id} className={`card rounded-xl p-3 mb-1.5 flex items-center gap-3 hover-scale transition-all ${
                         line.operator === 'DDD' ? 'glow-card-ddd' :
-                        line.operator === 'AFTU' ? 'glow-card-aftu' :
-                        line.operator === 'BRT' ? 'glow-card-brt' :
-                        line.operator === 'TER' ? 'glow-card-ter' : ''
+                        line.operator === 'BRT' ? 'glow-card-brt' : ''
                       }`}>
                         <span className="w-1.5 h-10 rounded-full flex-shrink-0" style={{background:line.color}}/>
                         <div className="flex-1 min-w-0">
@@ -591,14 +587,12 @@ export default function AdminApp() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              {(['DDD','AFTU','BRT','TER'] as OperatorId[]).map(op=>{
+              {(['BRT','DDD'] as OperatorId[]).map(op=>{
                 const pct=totalRevenue>0?(adminRevenue[op]/totalRevenue*100):0;
                 return(
                   <div key={op} className={`card rounded-2xl p-4 hover-scale transition-all ${
                     op === 'DDD' ? 'glow-card-ddd' :
-                    op === 'AFTU' ? 'glow-card-aftu' :
-                    op === 'BRT' ? 'glow-card-brt' :
-                    op === 'TER' ? 'glow-card-ter' : ''
+                    op === 'BRT' ? 'glow-card-brt' : ''
                   }`}>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="w-3.5 h-3.5 rounded-full" style={{background:opColor(op)}}/>
@@ -622,7 +616,7 @@ export default function AdminApp() {
                 </div>
               </div>
               <div className="space-y-2">
-                {[{id:'T-8F9A',op:'BRT',p:300,t:"À l'instant",m:'Wave'},{id:'T-2B4C',op:'DDD',p:200,t:'Il y a 2 min',m:'Orange Money'},{id:'T-9D1E',op:'AFTU',p:150,t:'Il y a 5 min',m:'Wave'},{id:'T-5C7F',op:'TER',p:500,t:'Il y a 8 min',m:'Free Money'}].map((tx,i)=>(
+                {[{id:'T-8F9A',op:'BRT',p:300,t:"À l'instant",m:'Wave'},{id:'T-2B4C',op:'DDD',p:200,t:'Il y a 2 min',m:'Orange Money'},{id:'T-7D3A',op:'BRT',p:300,t:'Il y a 5 min',m:'Wave'},{id:'T-5C7F',op:'DDD',p:200,t:'Il y a 8 min',m:'Free Money'}].map((tx,i)=>(
                   <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-xl" style={{background:'rgba(255,255,255,.03)'}}>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-white text-xs flex-shrink-0" style={{background:opColor(tx.op)}}>{tx.op[0]}</div>
                     <div className="flex-1 min-w-0">

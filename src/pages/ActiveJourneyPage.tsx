@@ -107,7 +107,7 @@ function TurnByTurnPanel({ steps, currentStatus, walkingStopName }: {
             <div className="flex flex-col items-center gap-0.5 flex-shrink-0 mt-0.5">
               <div className="w-8 h-8 rounded-xl flex items-center justify-center text-base"
                 style={{ background: stepColor + '22', border: `1.5px solid ${isCurrent ? stepColor : 'transparent'}` }}>
-                {step.type === 'walk' ? '🚶' : step.type === 'transfer' ? '🔄' : line?.operator === 'TER' ? '🚆' : line?.operator === 'BRT' ? '🚍' : '🚌'}
+                {step.type === 'walk' ? '🚶' : step.type === 'transfer' ? '🔄' : line?.operator === 'BRT' ? '🚍' : '🚌'}
               </div>
               {i < steps.length - 1 && (
                 <div className="w-0.5 flex-1 rounded-full mt-0.5" style={{ minHeight: 12, background: 'var(--c-border)' }} />

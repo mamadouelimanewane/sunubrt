@@ -9,7 +9,7 @@ const ALL = { id: 'all' as OperatorId, name: 'Tous', icon: '🌐', color: '#4755
 export default function OperatorFilter() {
   const dispatch = useAppDispatch();
   const selected = useAppSelector(s => s.mobility.selectedOperator);
-  const ops = [ALL, ...Object.values(OPERATORS)];
+  const ops = [ALL, ...Object.values(OPERATORS).filter(o => o.id !== 'YANGO')] as typeof ALL[];
 
   return (
     <div className="flex gap-1.5 overflow-x-auto px-3 py-2 scrollbar-hide">

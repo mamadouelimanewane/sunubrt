@@ -430,10 +430,8 @@ export default function LineCreator({ onClose, onSave }: LineCreatorProps) {
                   onChange={e => setOperator(e.target.value as OperatorId)}
                   className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-violet-500 transition-colors"
                 >
-                  <option value="DDD">DDD</option>
-                  <option value="AFTU">AFTU</option>
                   <option value="BRT">BRT</option>
-                  <option value="TER">TER</option>
+                  <option value="DDD">DDD</option>
                 </select>
               </div>
               

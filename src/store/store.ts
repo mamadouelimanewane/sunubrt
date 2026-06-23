@@ -2,7 +2,7 @@ import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { OperatorId, Stop, BusPosition, Lang, Ticket, CrowdsourceReport, Toast, ActiveJourney, JourneyRecord, JourneyStatus } from '@/types';
 
 // ── Pass Mensuel types ─────────────────────────────────────────
-export type PassType = 'mensuel_ddd' | 'mensuel_aftu' | 'mensuel_all' | 'scolaire' | 'famille';
+export type PassType = 'mensuel_brt' | 'mensuel_brt_ddd' | 'scolaire' | 'famille' | 'entreprise';
 export interface MonthlyPass {
   id: string;
   type: PassType;
@@ -10,7 +10,7 @@ export interface MonthlyPass {
   holderName: string;
   price: number;
   purchaseTime: number;
-  validUntil: number;   // timestamp
+  validUntil: number;
   usedRides: number;
   qrData: string;
   status: 'active' | 'expired';
@@ -20,11 +20,11 @@ export const PASS_CATALOG: Record<PassType, {
   price: number; duration: number; desc: string; color: string;
   maxRides: number | null;
 }> = {
-  mensuel_ddd:  { label: 'Pass DDD Mensuel',    emoji: '🚌', operator: 'DDD',  price: 9_900,  duration: 30, desc: 'Voyages illimités sur toutes les lignes DDD', color: '#2563eb', maxRides: null },
-  mensuel_aftu: { label: 'Pass AFTU Mensuel',   emoji: '🚐', operator: 'AFTU', price: 7_500,  duration: 30, desc: 'Voyages illimités sur tout le réseau AFTU',   color: '#e11d48', maxRides: null },
-  mensuel_all:  { label: 'Pass Tout-Réseau',    emoji: '🌐', operator: 'all',  price: 14_900, duration: 30, desc: 'DDD + AFTU + BRT — réseau complet de Dakar',  color: '#7c3aed', maxRides: null },
-  scolaire:     { label: 'Pass Scolaire',       emoji: '📚', operator: 'all',  price: 5_000,  duration: 30, desc: 'Tarif réduit pour élèves et étudiants',        color: '#059669', maxRides: 60 },
-  famille:      { label: 'Pass Famille (×4)',   emoji: '👨‍👩‍👧‍👦', operator: 'all',  price: 29_900, duration: 30, desc: '4 voyageurs — économisez 37% vs 4 pass individuel', color: '#f59e0b', maxRides: null },
+  mensuel_brt:     { label: 'Pass BRT Mensuel',    emoji: '🚍', operator: 'BRT', price: 8_000,  duration: 30, desc: 'Voyages illimités sur les 4 lignes BRT (B1·B2·B3·B4)', color: '#00b450', maxRides: null },
+  mensuel_brt_ddd: { label: 'Pass BRT + DDD',      emoji: '🌐', operator: 'all', price: 14_000, duration: 30, desc: 'BRT illimité + rabattement DDD — réseau complet Dakar', color: '#00c853', maxRides: null },
+  scolaire:        { label: 'Pass Étudiant',        emoji: '📚', operator: 'BRT', price: 5_000,  duration: 30, desc: 'Tarif réduit BRT pour élèves et étudiants',             color: '#059669', maxRides: 60   },
+  famille:         { label: 'Pass Famille (×4)',   emoji: '👨‍👩‍👧‍👦', operator: 'all', price: 25_000, duration: 30, desc: '4 voyageurs BRT + DDD illimités — économisez 40%',    color: '#f59e0b', maxRides: null },
+  entreprise:      { label: 'Pass Entreprise',     emoji: '🏢', operator: 'BRT', price: 60_000, duration: 30, desc: '10 pass BRT mensuels — solution mobilité entreprise',    color: '#1a56db', maxRides: null },
 };
 
 // ── Mobility Slice ─────────────────────────────────────────────
@@ -192,7 +192,7 @@ const ticketSlice = createSlice({
       { id: '2', type: 'accident', description: 'Accident au croisement Liberté 6 / VDN', location: [14.73, -17.45] as [number, number], timestamp: Date.now() - 1000 * 60 * 45, upvotes: 5 },
       { id: '3', type: 'crowd', description: 'Arrêt Petersen très chargé, bus pleins', location: [14.678, -17.44] as [number, number], timestamp: Date.now() - 1000 * 60 * 8, upvotes: 23 },
     ] as CrowdsourceReport[],
-    adminRevenue: { DDD: 450000, AFTU: 320000, BRT: 890000, TER: 1250000, all: 0 },
+    adminRevenue: { BRT: 1_250_000, DDD: 320000, all: 0 },
   } as TicketState,
   reducers: {
     buyTicket: (s, a: PayloadAction<Omit<Ticket, 'id' | 'purchaseTime' | 'status' | 'qrData'>>) => {
@@ -228,7 +228,7 @@ const ticketSlice = createSlice({
 interface PassState { myPasses: MonthlyPass[]; passSales: Record<PassType, number>; }
 const passSlice = createSlice({
   name: 'passes',
-  initialState: { myPasses: [], passSales: { mensuel_ddd:0, mensuel_aftu:0, mensuel_all:0, scolaire:0, famille:0 } } as PassState,
+  initialState: { myPasses: [], passSales: { mensuel_brt:0, mensuel_brt_ddd:0, scolaire:0, famille:0, entreprise:0 } } as PassState,
   reducers: {
     buyPass: (s, a: PayloadAction<{ type: PassType; holderName: string; payMethod: string }>) => {
       const cfg = PASS_CATALOG[a.payload.type];
@@ -449,14 +449,14 @@ const adsSlice = createSlice({
 // ── Fleet Slice ───────────────────────────────────────────────
 // Stocke l'opérateur connecté en tant que gestionnaire de flotte
 interface FleetState {
-  operator: 'DDD' | 'AFTU' | null;
+  operator: 'BRT' | 'DDD' | null;
   managerName: string;
 }
 const fleetSlice = createSlice({
   name: 'fleet',
   initialState: { operator: null, managerName: '' } as FleetState,
   reducers: {
-    loginFleetManager: (s, a: PayloadAction<{ operator: 'DDD' | 'AFTU'; name: string }>) => {
+    loginFleetManager: (s, a: PayloadAction<{ operator: 'BRT' | 'DDD'; name: string }>) => {
       s.operator = a.payload.operator;
       s.managerName = a.payload.name;
     },

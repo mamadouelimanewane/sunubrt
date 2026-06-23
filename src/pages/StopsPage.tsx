@@ -69,12 +69,7 @@ function StopCard({ stop, isFav, onClick, onFav, showAllDeps = false, onGuide }:
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-white text-sm group-hover:text-blue-400 transition-colors leading-snug">{stop.name}</h3>
           <p className="text-xs mt-0.5" style={{ color: '#475569' }}>{stop.zone}</p>
-          {stop.terConnection && (
-            <span className="inline-block text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"
-              style={{ background: 'rgba(5,150,105,.15)', color: '#34d399', border: '1px solid rgba(5,150,105,.2)' }}>
-              🚆 TER
-            </span>
-          )}
+{null}
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <button onClick={e => { e.stopPropagation(); setQrOpen(true); }}

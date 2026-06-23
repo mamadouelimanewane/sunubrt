@@ -1,6 +1,6 @@
 /**
  * FleetManagerApp.tsx
- * Gestionnaire de flotte temps réel — DDD et AFTU.
+ * Gestionnaire de flotte temps réel — DDD et BRT.
  * 5 onglets : Tableau de bord · Carte live · Flotte · Lignes · Alertes
  */
 
@@ -14,7 +14,7 @@ import { LINES, OPERATORS } from '@/data/transportData';
 import type { BusPosition } from '@/types';
 import {
   getFleet, computeRevenue, generateIncidents, generateMessages,
-  DDD_INCIDENTS_SEED, AFTU_INCIDENTS_SEED,
+  DDD_INCIDENTS_SEED, BRT_INCIDENTS_SEED,
 } from '@/services/fleetSimulation';
 import type {
   FleetVehicle, FleetIncident, FleetMessage, VehicleStatus,
@@ -23,7 +23,7 @@ import type {
 // ── Constantes visuelles ─────────────────────────────────────────
 const OP_CONFIG = {
   DDD:  { color: '#2563eb', bg: 'rgba(37,99,235,.12)', label: 'DDD',  full: 'Dakar Dem Dikk', emoji: '🚌', accent: '#60a5fa' },
-  AFTU: { color: '#f59e0b', bg: 'rgba(245,158,11,.12)', label: 'AFTU', full: 'AFTU Car Rapide', emoji: '🚐', accent: '#fcd34d' },
+  BRT:  { color: '#00b450', bg: 'rgba(0,180,80,.12)', label: 'BRT',  full: 'Bus Rapid Transit', emoji: '🚍', accent: '#86efac' },
 };
 
 const STATUS_CFG: Record<VehicleStatus, { label: string; color: string; dot: string; emoji: string }> = {
@@ -393,7 +393,7 @@ function IncidentReplayModal({ incident, onClose }: { incident: FleetIncident; o
 // ══════════════════════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ══════════════════════════════════════════════════════════════════
-export default function FleetManagerApp({ operator }: { operator: 'DDD' | 'AFTU' }) {
+export default function FleetManagerApp({ operator }: { operator: 'DDD' | 'BRT' }) {
   const dispatch = useAppDispatch();
   const busPositions = useAppSelector(s => s.mobility.busPositions);
   const cfg = OP_CONFIG[operator];
@@ -401,7 +401,7 @@ export default function FleetManagerApp({ operator }: { operator: 'DDD' | 'AFTU'
   // ── State ──────────────────────────────────────────────────────
   const [tab, setTab]             = useState<TabId>('dashboard');
   const [incidents, setIncidents] = useState<FleetIncident[]>(
-    operator === 'DDD' ? DDD_INCIDENTS_SEED : AFTU_INCIDENTS_SEED
+    operator === 'DDD' ? DDD_INCIDENTS_SEED : BRT_INCIDENTS_SEED
   );
   const [messages, setMessages]   = useState<FleetMessage[]>(() => generateMessages(getFleet(operator), operator));
   const [msgVehicle, setMsgVehicle] = useState<FleetVehicle | null>(null);

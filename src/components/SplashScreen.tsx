@@ -125,7 +125,7 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
             width: '96px',
             height: '96px',
             borderRadius: '24px',
-            background: 'linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%)',
+            background: 'linear-gradient(135deg, #1d4ed8 0%, #00b450 100%)',
             boxShadow: '0 12px 36px rgba(37,99,235,0.4)',
             display: 'flex',
             alignItems: 'center',
@@ -145,13 +145,13 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
             fontWeight: 950,
             letterSpacing: '-0.04em',
             margin: '0 0 8px 0',
-            background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #c4b5fd 100%)',
+            background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #86efac 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             filter: 'drop-shadow(0 2px 8px rgba(37,99,235,0.2))',
           }}
         >
-          SunuBus
+          SunuBRT
         </h1>
 
         {/* Tagline */}
@@ -163,7 +163,7 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
       {/* Loading Progress Bar Container */}
       <div style={{ width: '220px', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
         <div style={{ width: '100%', height: '5px', borderRadius: '99px', background: 'rgba(255,255,255,0.06)', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.03)' }}>
-          <div className="animate-progress" style={{ height: '100%', background: 'linear-gradient(90deg, #2563eb, #7c3aed)', borderRadius: '99px', width: '0%' }} />
+          <div className="animate-progress" style={{ height: '100%', background: 'linear-gradient(90deg, #2563eb, #00b450)', borderRadius: '99px', width: '0%' }} />
         </div>
 
         {/* Pulsing Dots */}
@@ -172,12 +172,12 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
           <div style={{ display: 'flex', gap: '4px' }}>
             <div className="animate-dot-1" style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#2563eb' }} />
             <div className="animate-dot-2" style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#60a5fa' }} />
-            <div className="animate-dot-3" style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#7c3aed' }} />
+            <div className="animate-dot-3" style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#00b450' }} />
           </div>
         </div>
       </div>
 
-      {/* Operator badges (DDD, AFTU, BRT, TER) */}
+      {/* Operator badges (BRT, DDD) */}
       <div
         style={{
           position: 'absolute',
@@ -192,10 +192,8 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
         }}
       >
         {[
+          { label: 'BRT', icon: '🚍', color: 'rgba(0,180,80,0.1)', borderColor: 'rgba(0,180,80,0.25)', textColor: '#00b450' },
           { label: 'DDD', icon: '🚌', color: 'rgba(37,99,235,0.1)', borderColor: 'rgba(37,99,235,0.25)', textColor: '#60a5fa' },
-          { label: 'AFTU', icon: '🚐', color: 'rgba(225,29,72,0.1)', borderColor: 'rgba(225,29,72,0.25)', textColor: '#fb7171' },
-          { label: 'BRT', icon: '🚍', color: 'rgba(124,58,237,0.1)', borderColor: 'rgba(124,58,237,0.25)', textColor: '#a78bfa' },
-          { label: 'TER', icon: '🚆', color: 'rgba(5,150,105,0.1)', borderColor: 'rgba(5,150,105,0.25)', textColor: '#34d399' },
         ].map((op, idx) => (
           <div
             key={op.label}

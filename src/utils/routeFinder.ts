@@ -8,11 +8,10 @@ import type { Stop, Line, OperatorId } from '@/types';
 const WALK_MPM     = 72;   // m/min walking (~4.3 km/h)
 const BUS_MPM      = 330;  // m/min bus (~20 km/h urban Dakar)
 const BRT_MPM      = 500;  // m/min BRT (~30 km/h voie dédiée)
-const TER_MPM      = 1667; // m/min TER (~100 km/h)
 const TRANSFER_PEN = 5;    // minutes wait at transfer stop
 
 const OPERATOR_MPM: Record<string, number> = {
-  DDD: BUS_MPM, AFTU: BUS_MPM, BRT: BRT_MPM, TER: TER_MPM,
+  DDD: BUS_MPM, BRT: BRT_MPM,
 };
 
 function hav(lat1: number, lon1: number, lat2: number, lon2: number): number {

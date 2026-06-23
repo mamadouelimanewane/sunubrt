@@ -13,14 +13,14 @@ import { getTotalAdRevenue, getTotalImpressions } from '@/services/adEngine';
 const OD_PAIRS = [
   { from: 'Plateau',        to: 'Parcelles',     count: 4_820, line: 'DDD L8',   pct: 100 },
   { from: 'Pikine',         to: 'Dakar Centre',  count: 4_210, line: 'DDD L1A',  pct: 87  },
-  { from: 'Guédiawaye',     to: 'Médina',        count: 3_560, line: 'AFTU A3',  pct: 74  },
+  { from: 'Guédiawaye',     to: 'Médina',        count: 3_560, line: 'DDD L3',   pct: 74  },
   { from: 'HLM',            to: 'Plateau',       count: 3_140, line: 'DDD L5',   pct: 65  },
   { from: 'Liberté 6',      to: 'Marché Sandaga',count: 2_980, line: 'DDD L8',   pct: 62  },
-  { from: 'Thiaroye',       to: 'Gare Routière', count: 2_740, line: 'AFTU A7',  pct: 57  },
+  { from: 'Thiaroye',       to: 'Gare Routière', count: 2_740, line: 'BRT-L1',   pct: 57  },
   { from: 'Yoff',           to: 'Dakar Centre',  count: 2_510, line: 'DDD L52',  pct: 52  },
   { from: 'Ouakam',         to: 'Plateau',       count: 2_280, line: 'DDD L64',  pct: 47  },
-  { from: 'Parcelles',      to: 'Médina',        count: 1_960, line: 'AFTU A12', pct: 41  },
-  { from: 'Keur Massar',    to: 'Gare TER',      count: 1_840, line: 'DDD L22',  pct: 38  },
+  { from: 'Parcelles',      to: 'Médina',        count: 1_960, line: 'BRT-L1',   pct: 41  },
+  { from: 'Keur Massar',    to: 'Gare Routière', count: 1_840, line: 'DDD L22',  pct: 38  },
 ];
 
 // Heures de pointe simulées (nb de voyages par heure)
@@ -397,7 +397,7 @@ export default function AnalyticsPage({ operator = 'DDD' }: { operator?: string 
             <div className="mt-4 rounded-xl p-3" style={{ background:'rgba(251,191,36,.08)', border:'1px solid rgba(251,191,36,.2)' }}>
               <p className="text-xs font-black" style={{ color:'#fbbf24' }}>💡 Recommandation IA</p>
               <p className="text-xs mt-1 leading-relaxed" style={{ color:'#94a3b8' }}>
-                Augmenter la fréquence des lignes DDD L8 et AFTU A3 entre 17h et 19h (+2 bus/ligne). Économie estimée : réduction de 23% de l'attente aux heures de pointe.
+                Augmenter la fréquence des lignes DDD L8 et BRT-L1 entre 17h et 19h (+2 bus/ligne). Économie estimée : réduction de 23% de l'attente aux heures de pointe.
               </p>
             </div>
           </div>
@@ -502,7 +502,7 @@ export default function AnalyticsPage({ operator = 'DDD' }: { operator?: string 
               { stop: "Croisement Colobane", load: 84, status: "Critique", color: "#ef4444", trend: "→ Stable", advice: "Fréquence actuelle satisfaisante" },
               { stop: "Rond-point Liberté 6", load: 72, status: "Élevée", color: "#f59e0b", trend: "↘ -5% vs hier", advice: "Contrôleurs en place" },
               { stop: "Patte d'Oie Interchange", load: 65, status: "Modérée", color: "#f59e0b", trend: "↗ +8% vs hier", advice: "Aucune action requise" },
-              { stop: "Gare de Dakar (TER)", load: 58, status: "Modérée", color: "#f59e0b", trend: "→ Stable", advice: "Flux passager régulier" },
+              { stop: "Gare de Dakar (BRT)", load: 58, status: "Modérée", color: "#f59e0b", trend: "→ Stable", advice: "Flux passager régulier" },
               { stop: "Terminus Pikine", load: 45, status: "Faible", color: "#10b981", trend: "↘ -10% vs hier", advice: "Baisse d'affluence constatée" },
             ].map((item, idx) => (
               <div key={idx} className="rounded-xl p-4" style={{ background:'var(--c-surface)', border: `1px solid ${item.load > 80 ? 'rgba(239,68,68,0.25)' : 'var(--c-border2)'}` }}>

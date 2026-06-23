@@ -8,10 +8,8 @@ import { AdSlot } from '@/components/AdBanner';
 import PaymentModal from '@/components/PaymentModal';
 
 const OPS = [
+  { op:'BRT'  as const, p:300, c:'#00b450', e:'🚍', l:'BRT Climatisé', s:'Bus Rapid Transit' },
   { op:'DDD'  as const, p:200, c:'#2563eb', e:'🚌', l:'Bus Urbain',    s:'Dakar Dem Dikk' },
-  { op:'AFTU' as const, p:150, c:'#e11d48', e:'🚐', l:'Car Rapide',    s:'AFTU' },
-  { op:'BRT'  as const, p:300, c:'#7c3aed', e:'🚍', l:'BRT Climatisé', s:'Bus Rapid Transit' },
-  { op:'TER'  as const, p:500, c:'#059669', e:'🚆', l:'TER Train',      s:'Train Express Rég.' },
 ];
 
 const PAY = [
@@ -305,7 +303,7 @@ export default function TicketsPage() {
       </div>
 
       {/* Pub contextuelle — opérateur sélectionné */}
-      {tab !== 'pass' && <AdSlot format="card" context={{ operator: selOp as 'DDD'|'AFTU' }} className="px-4 pt-3" />}
+      {tab !== 'pass' && <AdSlot format="card" context={{ operator: selOp as 'DDD'|'BRT' }} className="px-4 pt-3" />}
 
       {/* Pass tab */}
       {tab === 'pass' && <div className="flex-1 overflow-hidden"><PassSection /></div>}

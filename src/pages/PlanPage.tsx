@@ -341,17 +341,15 @@ export default function PlanPage() {
                 <span className="text-xl">💰</span>
                 <div className="flex-1">
                   <div className="text-xs font-black text-white">Calculateur de tarif mensuel</div>
-                  <div className="text-[10px] mt-0.5" style={{ color: '#475569' }}>Comparer DDD · AFTU · BRT · TER</div>
+                  <div className="text-[10px] mt-0.5" style={{ color: '#475569' }}>Comparer BRT · DDD</div>
                 </div>
                 <span style={{ color: '#fbbf24' }}>{tariffOpen ? '▲' : '▼'}</span>
               </button>
               {tariffOpen && (() => {
                 const trips = [10, 20, 30, 40];
                 const tariffs = [
+                  { label: 'BRT',  price: 300, color: '#00b450', emoji: '🚍' },
                   { label: 'DDD',  price: 200, color: '#2563eb', emoji: '🚌' },
-                  { label: 'AFTU', price: 300, color: '#7c3aed', emoji: '🚐' },
-                  { label: 'BRT',  price: 350, color: '#059669', emoji: '🚍' },
-                  { label: 'TER',  price: 500, color: '#dc2626', emoji: '🚆' },
                 ];
                 return (
                   <div className="mt-2 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(251,191,36,.15)' }}>

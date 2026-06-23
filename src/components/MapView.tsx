@@ -327,7 +327,7 @@ function FocusedLineOverlay({ line }: { line: Line }) {
       <Polyline positions={coords} color="rgba(0,0,0,.35)" weight={6} opacity={1} />
       {/* Main line */}
       <Polyline positions={coords} color={line.color} weight={4} opacity={1}
-        dashArray={line.operator === 'TER' ? '18 9' : undefined} />
+        dashArray={line.operator === 'BRT' ? '18 9' : undefined} />
       {/* Bright inner line */}
       <Polyline positions={coords} color="rgba(255,255,255,.3)" weight={1.5} opacity={1} />
 
@@ -428,7 +428,7 @@ function BusLine({ line, isFocused, hasFocus }: { line: Line; isFocused: boolean
         <Polyline positions={coords} color="rgba(0,0,0,.3)" weight={weight + 2} opacity={1} />
       ) : null}
       <Polyline positions={coords} color={line.color} weight={weight} opacity={opacity}
-        dashArray={line.operator === 'TER' ? '16 8' : undefined} />
+        dashArray={line.operator === 'BRT' ? '16 8' : undefined} />
     </>
   );
 }

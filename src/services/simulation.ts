@@ -29,18 +29,18 @@ export const MOCK_DRIVERS: Record<string, DriverInfo> = {
   // BRT
   'bus_BRT-L1_1': { id: 'd05', name: 'Aliou Gaye',   phone: '+221 78 567 89 01', plate: 'DK-9901-EE', operator: 'BRT',  lineId: 'BRT-L1' },
   'bus_BRT-L1_2': { id: 'd06', name: 'Cheikh Ba',    phone: '+221 76 678 90 12', plate: 'DK-1123-FF', operator: 'BRT',  lineId: 'BRT-L1' },
-  // TER
-  'bus_TER-01_1': { id: 'd07', name: 'Abdou Sy',     phone: '+221 70 789 01 23', plate: 'TER-2024-01', operator: 'TER', lineId: 'TER-01' },
-  'bus_TER-01_2': { id: 'd08', name: 'Lamine Diouf', phone: '+221 77 890 12 34', plate: 'TER-2024-02', operator: 'TER', lineId: 'TER-01' },
-  // AFTU
-  'bus_A3_1':   { id: 'd09', name: 'Pape Mbaye',      phone: '+221 76 901 23 45', plate: 'DK-5521-GG', operator: 'AFTU', lineId: 'A3'  },
-  'bus_A3_2':   { id: 'd10', name: 'Serigne Touba',   phone: '+221 78 012 34 56', plate: 'DK-8834-HH', operator: 'AFTU', lineId: 'A3'  },
-  'bus_A18_1':  { id: 'd19', name: 'Sadio Faye',      phone: '+221 77 123 23 34', plate: 'DK-4411-TT', operator: 'AFTU', lineId: 'A18' },
-  'bus_A18_2':  { id: 'd20', name: 'Baye Dame',       phone: '+221 76 234 34 45', plate: 'DK-5522-UU', operator: 'AFTU', lineId: 'A18' },
-  'bus_A30_1':  { id: 'd21', name: 'Issa Diallo',     phone: '+221 70 345 45 56', plate: 'DK-6633-VV', operator: 'AFTU', lineId: 'A30' },
-  'bus_A30_2':  { id: 'd22', name: 'Amadou Lamine',   phone: '+221 78 456 56 67', plate: 'DK-7744-WW', operator: 'AFTU', lineId: 'A30' },
-  'bus_A2_1':   { id: 'd23', name: 'Daouda Ndiaye',   phone: '+221 77 567 67 78', plate: 'DK-8855-XX', operator: 'AFTU', lineId: 'A2'  },
-  'bus_A2_2':   { id: 'd24', name: 'Mbaye Dieng',     phone: '+221 76 678 78 89', plate: 'DK-9966-YY', operator: 'AFTU', lineId: 'A2'  },
+  // BRT extra
+  'bus_BRT-L1_3': { id: 'd07', name: 'Abdou Sy',     phone: '+221 70 789 01 23', plate: 'BRT-2024-03', operator: 'BRT', lineId: 'BRT-L1' },
+  'bus_BRT-L1_4': { id: 'd08', name: 'Lamine Diouf', phone: '+221 77 890 12 34', plate: 'BRT-2024-04', operator: 'BRT', lineId: 'BRT-L1' },
+  // DDD extra
+  'bus_L3_1':   { id: 'd09', name: 'Pape Mbaye',      phone: '+221 76 901 23 45', plate: 'DK-5521-GG', operator: 'DDD', lineId: 'L3'  },
+  'bus_L3_2':   { id: 'd10', name: 'Serigne Touba',   phone: '+221 78 012 34 56', plate: 'DK-8834-HH', operator: 'DDD', lineId: 'L3'  },
+  'bus_L18_1':  { id: 'd19', name: 'Sadio Faye',      phone: '+221 77 123 23 34', plate: 'DK-4411-TT', operator: 'DDD', lineId: 'L18' },
+  'bus_L18_2':  { id: 'd20', name: 'Baye Dame',       phone: '+221 76 234 34 45', plate: 'DK-5522-UU', operator: 'DDD', lineId: 'L18' },
+  'bus_L30_1':  { id: 'd21', name: 'Issa Diallo',     phone: '+221 70 345 45 56', plate: 'DK-6633-VV', operator: 'DDD', lineId: 'L30' },
+  'bus_L30_2':  { id: 'd22', name: 'Amadou Lamine',   phone: '+221 78 456 56 67', plate: 'DK-7744-WW', operator: 'DDD', lineId: 'L30' },
+  'bus_L2_1':   { id: 'd23', name: 'Daouda Ndiaye',   phone: '+221 77 567 67 78', plate: 'DK-8855-XX', operator: 'DDD', lineId: 'L2'  },
+  'bus_L2_2':   { id: 'd24', name: 'Mbaye Dieng',     phone: '+221 76 678 78 89', plate: 'DK-9966-YY', operator: 'DDD', lineId: 'L2'  },
 };
 
 // ══════════════════════════════════════════════════════════════
@@ -217,9 +217,8 @@ async function buildSimRoute(lineId: string): Promise<[number, number][]> {
 
 export async function initSimulation() {
   if (simInterval) return;
-  // TER-01 exclu : train — fallback ligne droite traverserait la baie de Hann
-  // L1A → L1 (correction : L1A n'existe pas dans les données)
-  const linesToSimulate = ['L1', 'L8', 'L6', 'L12', 'L9', 'L20', 'BRT-L1', 'A3', 'A18', 'A30', 'A2'];
+  // Lignes simulées : DDD et BRT uniquement
+  const linesToSimulate = ['L1', 'L8', 'L6', 'L12', 'L9', 'L20', 'BRT-L1', 'L3', 'L18', 'L30', 'L2'];
 
   for (const lineId of linesToSimulate) {
     const route = await buildSimRoute(lineId);

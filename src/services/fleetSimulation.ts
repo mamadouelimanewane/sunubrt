@@ -1,6 +1,6 @@
 /**
  * fleetSimulation.ts
- * Moteur de données temps réel pour les gestionnaires de flottes DDD et AFTU.
+ * Moteur de données temps réel pour les gestionnaires de flottes DDD et BRT.
  * Génère : roster véhicules, statuts dynamiques, incidents, revenus, messages.
  */
 
@@ -16,7 +16,7 @@ export interface FleetVehicle {
   id: string;
   plate: string;
   lineId: string;
-  operator: 'DDD' | 'AFTU';
+  operator: 'DDD' | 'BRT';
   driverName: string;
   driverPhone: string;
   driverId: string;
@@ -75,7 +75,7 @@ const DDD_NAMES = [
   'Mansour Fall','Idrissa Gueye','Pape Diagne','Abdoulaye Wade','Malick Niang',
   'Thierno Mbaye','Khadim Ba','Landing Badji','Momar Talla','Boucounta Diallo',
 ];
-const AFTU_NAMES = [
+const BRT_NAMES = [
   'Sadio Faye','Baye Dame','Serigne Moustapha','Malick Sarr','Issa Diallo',
   'Amadou Lamine','Daouda Ndiaye','Baïdy Fall','Cheikh Ahmed','Mbaye Dieng',
   'Pape Matar','Oumar Konaté','Ibou Diallo','Samba Badji','Landing Mané',
@@ -90,7 +90,7 @@ function seededRand(seed: number) {
   return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
 }
 
-function pickPlate(rng: () => number, i: number, op: 'DDD' | 'AFTU'): string {
+function pickPlate(rng: () => number, i: number, op: 'DDD' | 'BRT'): string {
   const num = 1000 + Math.floor(rng() * 8999);
   const letters = op === 'DDD' ? 'ABCDEFGHJKLMNPQRSTUVWXYZ' : 'BCDFGHJKLMNPQRSTVWXYZ';
   const c1 = letters[Math.floor(rng() * letters.length)];
@@ -108,9 +108,9 @@ function pickStatus(rng: () => number): VehicleStatus {
 }
 
 // ── Génération du roster ─────────────────────────────────────────
-function buildRoster(operator: 'DDD' | 'AFTU'): FleetVehicle[] {
+function buildRoster(operator: 'DDD' | 'BRT'): FleetVehicle[] {
   const lines  = LINES.filter(l => l.operator === operator);
-  const names  = operator === 'DDD' ? DDD_NAMES : AFTU_NAMES;
+  const names  = operator === 'DDD' ? DDD_NAMES : BRT_NAMES;
   const buses  = operator === 'DDD' ? 3 : 2;  // véhicules par ligne en moyenne
   const rng    = seededRand(operator === 'DDD' ? 42 : 137);
 
@@ -130,8 +130,8 @@ function buildRoster(operator: 'DDD' | 'AFTU'): FleetVehicle[] {
         driverPhone: `+221 ${['77','76','70','78'][idx % 4]} ${String(100 + (idx % 900)).padStart(3,'0')} ${String(idx % 100).padStart(2,'0')} ${String((idx * 7) % 100).padStart(2,'0')}`,
         driverId:    `${operator.toLowerCase()}_d${String(idx).padStart(3,'0')}`,
         status:      pickStatus(rng),
-        capacity:    operator === 'DDD' ? 60 : 25,
-        vehicleType: operator === 'DDD' ? 'grand_bus' : (rng() > 0.5 ? 'car_rapide' : 'minibus'),
+        capacity:    operator === 'DDD' ? 60 : 80,
+        vehicleType: operator === 'DDD' ? 'grand_bus' : (rng() > 0.5 ? 'grand_bus' : 'minibus'),
         lastMaintenanceDays: Math.floor(rng() * 120),
         kmTotal:    100000 + Math.floor(rng() * 200000),
         kmToday:    Math.floor(rng() * 220),
@@ -146,10 +146,10 @@ function buildRoster(operator: 'DDD' | 'AFTU'): FleetVehicle[] {
 
 // Rosters statiques (générés une seule fois)
 export const DDD_FLEET  = buildRoster('DDD');
-export const AFTU_FLEET = buildRoster('AFTU');
+export const BRT_FLEET  = buildRoster('BRT');
 
-export function getFleet(op: 'DDD' | 'AFTU') {
-  return op === 'DDD' ? DDD_FLEET : AFTU_FLEET;
+export function getFleet(op: 'DDD' | 'BRT') {
+  return op === 'DDD' ? DDD_FLEET : BRT_FLEET;
 }
 
 // ── Incidents auto-générés ────────────────────────────────────────
@@ -231,7 +231,7 @@ function seedIncidents(fleet: FleetVehicle[]): FleetIncident[] {
 }
 
 export const DDD_INCIDENTS_SEED  = seedIncidents(DDD_FLEET);
-export const AFTU_INCIDENTS_SEED = seedIncidents(AFTU_FLEET);
+export const BRT_INCIDENTS_SEED  = seedIncidents(BRT_FLEET);
 
 // ── Revenus simulés ───────────────────────────────────────────────
 export function computeRevenue(fleet: FleetVehicle[]): DailyRevenue {
@@ -244,7 +244,7 @@ export function computeRevenue(fleet: FleetVehicle[]): DailyRevenue {
     lineGroups[v.lineId].push(v);
   }
 
-  const tarif = fleet[0]?.operator === 'DDD' ? 200 : 150;
+  const tarif = fleet[0]?.operator === 'DDD' ? 200 : 300;
   const byLine: RevenueEntry[] = Object.entries(lineGroups).map(([lineId, buses]) => {
     const line  = LINES.find(l => l.id === lineId);
     const trips = buses.length * (12 + Math.floor(rng() * 8));   // 12-20 rotations/jour/bus
@@ -282,7 +282,7 @@ const MSG_TEMPLATES_DRIVER = [
   'Fin de service dans 20 min, qui reprend ?',
 ];
 
-export function generateMessages(fleet: FleetVehicle[], op: 'DDD' | 'AFTU'): FleetMessage[] {
+export function generateMessages(fleet: FleetVehicle[], op: 'DDD' | 'BRT'): FleetMessage[] {
   const rng = seededRand(fleet.length + (op === 'DDD' ? 1 : 2));
   const now = Date.now();
   const msgs: FleetMessage[] = [];

@@ -486,7 +486,7 @@ export default function ProfilePage() {
               <div className="px-4 py-2 space-y-2" style={{ borderTop: '1px solid var(--c-border)' }}>
                 {[
                   { label: 'DDD — Service client',  num: '+221 33 864 00 00', color: '#2563eb', emoji: '🚌' },
-                  { label: 'AFTU — Réclamations',   num: '+221 33 821 14 14', color: '#7c3aed', emoji: '🚐' },
+                  { label: 'BRT — Service client',   num: '+221 33 821 14 14', color: '#00b450', emoji: '🚍' },
                   { label: 'SAMU',                  num: '15',               color: '#dc2626', emoji: '🚑' },
                   { label: 'Police nationale',       num: '17',               color: '#1d4ed8', emoji: '🚔' },
                   { label: 'Sapeurs-pompiers',       num: '18',               color: '#dc2626', emoji: '🚒' },

@@ -1,14 +1,14 @@
 // ══════════════════════════════════════════════════════════════
-//  SunuBus v5 — Types TypeScript globaux
+//  SunuBRT — Types TypeScript globaux
 // ══════════════════════════════════════════════════════════════
 
-export type OperatorId = 'DDD' | 'AFTU' | 'BRT' | 'TER' | 'all';
+export type OperatorId = 'BRT' | 'DDD' | 'all';
 export type UserRole   = 'passenger' | 'driver' | 'admin' | 'super_admin';
 export type Lang       = 'fr' | 'wo' | 'en';
 export type Theme      = 'dark' | 'light';
 
 export interface Operator {
-  id: OperatorId;
+  id: OperatorId | 'YANGO';
   name: string;
   fullName: string;
   icon: string;
@@ -16,15 +16,6 @@ export interface Operator {
   bg: string;
   tarif: number;
   climatise: boolean;
-}
-
-export interface TerInfo {
-  gare: string;
-  horaires: string;
-  freq: string;
-  quai: string[];
-  services: string[];
-  correspondances: string[];
 }
 
 export interface Stop {
@@ -35,8 +26,8 @@ export interface Stop {
   lng: number;
   operators: OperatorId[];
   lines: string[];
-  terConnection?: boolean;
-  terInfo?: TerInfo;
+  isPole?: boolean;      // pôle d'échange BRT
+  isTerminus?: boolean;
 }
 
 export interface Line {
@@ -48,6 +39,7 @@ export interface Line {
   tarif: number;
   stops: string[];
   operator: OperatorId;
+  isExpress?: boolean;
 }
 
 export interface Departure {
@@ -141,7 +133,7 @@ export interface Ticket {
 
 export interface CrowdsourceReport {
   id: string;
-  type: 'delay' | 'accident' | 'crowd' | 'other';
+  type: 'delay' | 'accident' | 'crowd' | 'harcelement' | 'other';
   description: string;
   location: [number, number];
   timestamp: number;

@@ -17,9 +17,14 @@
   --blue-l: #3b82f6;
   --blue-d: #1d4ed8;
   --purple: #7c3aed;
-  --green:  #059669;
+  --green:  #00b450;   /* SunuBRT vert officiel */
+  --brt:    #00b450;
+  --brt-l:  #00c853;
+  --brt-d:  #007a36;
+  --ddd:    #1a56db;
   --red:    #dc2626;
   --amber:  #d97706;
+  --shadow-glow-brt: 0 0 30px rgba(0,180,80,.40);
 
   --r-sm: 10px;
   --r-md: 14px;
