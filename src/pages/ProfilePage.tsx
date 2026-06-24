@@ -106,16 +106,19 @@ export default function ProfilePage() {
       </div>
 
       {/* Tab nav */}
-      <div className="flex px-4 gap-1.5 mb-4 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-        {([['stats','📊 Stats'], ['badges','🏅 Badges'], ['history','🕐 Historique'], ['favs','⭐ Favoris'], ['settings','⚙️ Réglages']] as const).map(([id, label]) => (
+      <div className="flex px-4 gap-1.5 mb-4 overflow-x-auto scrollbar-hide">
+        {([['stats','📊'], ['badges','🏅'], ['history','🕐'], ['favs','⭐'], ['settings','⚙️']] as const).map(([id, icon]) => {
+          const labels: Record<string,string> = { stats:'Stats', badges:'Badges', history:'Historique', favs:'Favoris', settings:'Réglages' };
+          return (
           <button key={id} onClick={() => setTab(id)}
-            className="flex-1 py-2 rounded-xl text-xs font-black transition-all"
+            className="flex-shrink-0 flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-black transition-all"
             style={tab === id
               ? { background: 'rgba(37,99,235,.25)', color: '#60a5fa', border: '1px solid rgba(37,99,235,.4)' }
               : { background: 'rgba(255,255,255,.04)', color: '#475569', border: '1px solid var(--c-border)' }}>
-            {label}
+            <span>{icon}</span><span>{labels[id]}</span>
           </button>
-        ))}
+          );
+        })}
       </div>
 
       <div className="px-4 space-y-5">
@@ -135,7 +138,7 @@ export default function ProfilePage() {
                     <span className="text-xl">{s.e}</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#334155' }}>{s.l}</span>
                   </div>
-                  <div className="font-black text-white" style={{ fontSize: 22 }}>
+                  <div className="font-black text-white text-xl sm:text-2xl" style={{ lineHeight: 1.1 }}>
                     {s.v}<span className="text-xs font-semibold ml-1" style={{ color: '#475569' }}>{s.u}</span>
                   </div>
                 </div>
@@ -378,13 +381,13 @@ export default function ProfilePage() {
               </div>
               <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--c-border)' }}>
                 <div className="text-sm font-bold mb-2" style={{ color: 'var(--c-text)' }}>Thème</div>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2" style={{ gridTemplateColumns: 'repeat(3, minmax(0,1fr))' }}>
                   {([
                     { value: 'dark',        icon: '🌑', label: 'Sombre'  },
                     { value: 'dim',         icon: '🌓', label: 'Tamisé'  },
                     { value: 'light',       icon: '☀️', label: 'Clair'   },
                     { value: 'natural',     icon: '🌿', label: 'Jour'    },
-                    { value: 'dakar-night', icon: '🌃', label: 'Dakar Night' },
+                    { value: 'dakar-night', icon: '🌃', label: 'Nuit'    },
                     { value: 'sahel',       icon: '🏜️', label: 'Sahel'   },
                   ] as { value: AppTheme; icon: string; label: string }[]).map(opt => {
                     const active = (theme ?? (darkMode ? 'dark' : 'light')) === opt.value;

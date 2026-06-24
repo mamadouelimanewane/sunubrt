@@ -511,7 +511,7 @@ export default function LinesPage({ onShowMap }: { onShowMap?: () => void } = {}
               </div>
             ) : (
               /* Colonnes : BRT | DDD */
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, alignItems: 'start' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, alignItems: 'start' }}>
                 {/* Colonne BRT */}
                 {(() => {
                   const opLines = directLines.filter(l => l.operator === 'BRT');

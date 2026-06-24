@@ -103,7 +103,7 @@ function CampaignModal({ ad, onClose }: { ad: AdCampaign; onClose: () => void })
 
         <div className="p-6 space-y-5">
           {/* Stats row */}
-          <div className="grid grid-cols-4 gap-3 text-center">
+          <div className="grid grid-cols-2 gap-3 text-center" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%,120px),1fr))' }}>
             {[
               { label: 'Impressions', value: fmtNum(stats.impr), icon: '👁' },
               { label: 'Clics',       value: fmtNum(stats.clks), icon: '👆' },

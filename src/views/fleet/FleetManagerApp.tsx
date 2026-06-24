@@ -576,7 +576,7 @@ export default function FleetManagerApp({ operator }: { operator: 'DDD' | 'BRT' 
       {opBusPositions.length > 0 && (
         <div className="rounded-2xl p-4" style={{ background: 'var(--c-surface)', border: '1px solid var(--c-border2)' }}>
           <div className="text-xs font-black mb-3" style={{ color: '#64748b' }}>TÉLÉMÉTRIE LIVE ({opBusPositions.length} GPS actifs)</div>
-          <div className="grid grid-cols-3 gap-3 text-center">
+          <div className="grid gap-3 text-center" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%,90px),1fr))' }}>
             <div>
               <div className="text-xl font-black text-white">{kpis.avgSpeed}</div>
               <div className="text-[10px]" style={{ color: '#475569' }}>km/h moy.</div>

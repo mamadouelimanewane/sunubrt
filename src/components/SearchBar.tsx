@@ -199,7 +199,7 @@ export default function SearchBar({ placeholder = 'Rechercher un arrêt ou un li
             background: 'var(--c-surface)',
             border: '1px solid var(--c-border2)',
             boxShadow: 'var(--shadow-xl)',
-            maxHeight: '70vh',
+            maxHeight: 'min(70vh, 420px)',
             overflowY: 'auto',
           }}>
 

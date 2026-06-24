@@ -130,12 +130,14 @@ function DraggableInfoBar({ routeDisplay }: { routeDisplay: NonNullable<ReturnTy
       onTouchEnd={onTouchEnd}
       style={{
         position: 'absolute',
-        left: pos.x,
+        left: Math.min(pos.x, window.innerWidth - 240),
         bottom: -pos.y,
         zIndex: 900,
         cursor: 'grab',
         display: 'flex',
-        gap: 8,
+        flexWrap: 'wrap',
+        gap: isMobile ? 6 : 8,
+        maxWidth: isMobile ? 'calc(100vw - 24px)' : '90vw',
         userSelect: 'none',
         touchAction: 'none',
       }}>
@@ -243,7 +245,7 @@ function DraggableTimeline({ routeDisplay }: { routeDisplay: NonNullable<ReturnT
   }
 
   return (
-    <div style={{ ...style, minWidth: 150, maxWidth: isMobile ? 170 : 190 }}
+    <div className="map-timeline" style={{ ...style, minWidth: 130, maxWidth: isMobile ? Math.min(window.innerWidth * 0.52, 170) : 190 }}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -1070,7 +1072,7 @@ export default function MapView() {
         if (!fl) return null;
         const liveBuses = busPositions.filter((b: BusPosition) => b.lineId === focusedLine);
         return (
-          <div className="absolute top-3 left-3 z-[900] rounded-2xl shadow-2xl overflow-hidden max-w-xs"
+          <div className="absolute top-3 left-3 z-[900] rounded-2xl shadow-2xl overflow-hidden" style={{ maxWidth: 'min(280px, calc(100vw - 80px))' }}
             style={{ background: 'rgba(10,15,30,.92)', backdropFilter: 'blur(16px)', border: `1px solid ${fl.color}40` }}>
             <div className="h-1" style={{ background: fl.color }} />
             <div className="px-4 py-2.5 flex items-center gap-3">

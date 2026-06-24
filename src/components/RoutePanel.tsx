@@ -507,7 +507,7 @@ export default function RoutePanel() {
             <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#334155' }}>
               📍 Je cherche un lieu connu
             </p>
-            <div className="grid grid-cols-4 gap-1.5">
+            <div className="grid grid-cols-4 gap-1.5 xs:grid-cols-4" style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}>
               {[
                 { id:'tr-gare-dakar', e:'🚉', l:'Gare Dakar' },
                 { id:'tr-aibd',       e:'✈️',  l:'Aéroport'   },
